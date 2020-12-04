@@ -11,6 +11,19 @@ td {
     border-collapse: collapse;
 }
 
+.summa > th, td{
+    background-color: lightgray; 
+}
+.bonus > th, td{
+    background-color: lightgray;
+}
+.total > th,td{
+    background-color: lightgray;
+}
+.spelare > th, td{
+    background-color: lightgrey;
+}
+
 table,
 tr,
 th {
