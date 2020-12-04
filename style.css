@@ -1,6 +1,38 @@
-th{
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
+table {
+    width: 600px;
+    background-color: rgba(0, 0, 0, .5);
+    font-weight: bold;
 }
 
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table,
+tr,
+th {
+    padding: .5rem;
+}
+
+table tr td:nth-child(2) {
+    border-bottom: 3px solid red;
+    background-color: rgba(240, 6, 6, 0.3);
+}
+
+table tr td:nth-child(3) {
+    border-bottom: 3px solid green;
+    background-color: rgba(0, 128, 0, .3);
+}
+
+table tr td:nth-child(4) {
+    border-bottom: 3px solid blue;
+    background-color: rgba(0, 0, 255, .3);
+}
+
+table tr td:nth-child(5) {
+    border-bottom: 3px solid #199ec7e7;
+    background-color: rgba(25, 158, 199, 0.3);
+}
