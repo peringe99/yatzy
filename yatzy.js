@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
         let sum = parseInt(ones.value) + parseInt(twos.value) + parseInt(threes.value) + parseInt(fours.value) + parseInt(fives.value) + parseInt(sixes.value);
         sumtd.innerHTML = sum
 
+        let bonus = document.getElementById("bonus")
+
+        if (sum >= 63) {
+            bonus.innerHTML = ("50")
+        }
+
 
     })
 
