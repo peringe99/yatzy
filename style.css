@@ -38,6 +38,11 @@ th {
     padding: .5rem;
 }
 
+#btnSend{
+    margin-top: 20px;
+    margin-left: 280px;
+    padding: 10px;
+}
 
 /* table tr td:nth-child(2) {
     border-bottom: 3px solid red;

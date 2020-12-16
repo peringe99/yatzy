@@ -16,11 +16,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
         if (sum >= 63) {
             bonus.innerHTML = parseInt(50)
-        } else{
-            bonus.innerHTML = ("Ingen bonus")
+        } else { 
+            bonus.innerHTML = ("N/A")
         }
-
-
     })
-
 });
