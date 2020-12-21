@@ -141,3 +141,7 @@ table tr .active {
 .clearboth {
     clear: both;
 }
+
+.active {
+    background-color: salmon;
+}

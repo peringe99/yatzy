@@ -1,27 +1,3 @@
-/*--Start Yatzy Class-- */
-class Yatzy {
-    constructor(ones, twos, threes, fours, fives, sixes, sum, bonus, pair, twopairs, threeOfKind, fourOfKaind, small_straight, large_straight, fullHouse, chance, yatzy, total) {
-        this.ones = ones;
-        this.twos = twos;
-        this.threes = threes;
-        this.fours = fours;
-        this.fives = fives;
-        this.sixes = sixes;
-        this.sum = sum;
-        this.bonus = bonus;
-        this.pair = pair;
-        this.twopairs = twopairs;
-        this.threeOfKind = threeOfKind;
-        this.fourOfKaind = fourOfKaind;
-        this.small_straight = small_straight;
-        this.large_straight = large_straight;
-        this.fullHouse = fullHouse;
-        this.chance = chance;
-        this.yatzy = yatzy;
-        this.total = total;
-    }
-}
-/*--End Yatzy Class-- */
 class Die {
     constructor() {
         this.value = null;
@@ -121,7 +97,6 @@ class Dice {
             this.dice_values[current_dice.value]++;
         }
     }
-
     throw () {
         for (let current_dice of this.dice_objects) {
             current_dice.throw();
@@ -153,15 +128,60 @@ class Player {
 /* Start Game Class */
 class Game {
     constructor() {
+        this.players = [];
+        this.dices = new Dice();
 
+    }
+    addPlayer(playername) {
+        let newPlayer = new Player(playername, false);
+        this.players.push(newPlayer);
+        this.players[0].myTurn = true;
+        this.player_fields();
+    };
+    change_player_turn() {
+        this.players.forEach(x => {
+            x.myTurn = x.myTurn ? false : true;
+        })
+    }
+    player_is_active() {
+        // let player_active = document.querySelectorAll('.playerer_name'); // todo active player in table
+        let player_active = document.querySelectorAll('.player_list .player');
+        player_active.forEach((x, index) => {
+            x.classList.remove('active');
+            if (this.players[index].myTurn == true) {
+                x.classList.add('active');
+            }
+        })
+    }
+    player_fields() { // kan ta in parameter
+        let fields = Array.from(document.querySelectorAll('.upper_section td'));
+
+        let player_field = this.players.map((player, player_index) =>
+            fields.reduce((acc, obj, index, array) => {
+                let key = array[player_index].className;
+                let player_name = player.name;
+                if (!acc[player_name]) {
+                    acc[player_name] = [];
+                }
+                if (obj.className == key) {
+                    acc[player_name].push(obj)
+                }
+                return acc;
+            }, []))
+        return player_field;
     }
 }
 /* End Game Class */
 let turns = 3;
-let dice_obj = [6, 2, 2, 2, 6];
+let dice_array = [6, 2, 2, 2, 6];
 
 let dices = new Dice();
-// dices.set_test_obj(dice_obj) // To set test dice object
+let game = new Game();
+game.addPlayer('Kalle');
+// game.addPlayer('Olle');
+
+
+// dices.set_test_obj(dice_array) // To set test dice array
 
 // console.log(dice1.small_straight());
 // console.log(dice1.large_straight());
@@ -169,61 +189,118 @@ let dices = new Dice();
 // console.log(dice1.has_FullHouse());
 // console.log(dice1.get_die_of_akind());
 
-let allDices = document.querySelectorAll(".dice_area .dice_list .dice_span");
-let player_one = document.querySelectorAll('.player_1');
-let startbtn = document.getElementById('startbtn');
-let throw_span = document.getElementById('throw_span');
 
-startbtn.addEventListener('click', dice_elements);
 
-function dice_elements() {
-    if (turns == 1) {
-        this.setAttribute('disabled', 'disabled');
-    }
-    allDices.forEach((die, index) => {
-        let dice = dices.dice_objects;
-        let checkbox = document.getElementById(`chk_${index + 1}`).checked;
-        if (!checkbox) {
-            dices.chang_one_dice(index)
+document.addEventListener("DOMContentLoaded", function(e) {
+
+    // let players = ['Kalle', 'Olle']; // Test 
+
+    let allDices = document.querySelectorAll(".dice_area .dice_list .dice_span");
+
+    let startbtn = document.getElementById('startbtn');
+    let throw_span = document.getElementById('throw_span');
+
+    let fields = Array.from(document.querySelectorAll('.upper_section td')); // 
+
+    startbtn.addEventListener('click', dice_checkbox);
+
+    function dice_elements() {
+        if (turns == 1) {
+            this.setAttribute('disabled', 'disabled');
         }
-        die.innerHTML = `<img src="./images/dices/Alea_${dice[index].value}.png">`;
-    });
-    game_table()
-    turns--
-    throw_span.textContent = turns;
-}
+        allDices.forEach((die, index) => {
+            let dice = game.dices.dice_objects;
+            let checkbox = document.getElementById(`chk_${index + 1}`).checked;
+            if (!checkbox) {
+                game.dices.chang_one_dice(index)
+            }
+            die.innerHTML = `<img src="./images/dices/Alea_${dice[index].value}.png">`;
+        });
+        upper_section_table();
+        // player_sum()
+        turns--
+        throw_span.textContent = turns;
+    }
 
+    function dice_checkbox() {
+        let checkboxes = Array.from(document.querySelectorAll(".dice input"));
+        if (turns == 1) {
+            this.setAttribute('disabled', 'disabled');
+        }
+        let checked_boxes = checkboxes.filter(current_checkbox => {
+            return current_checkbox;
+        }, []);
+        let dice = game.dices.dice_objects;
+        checked_boxes.forEach((el, index) => {
+            if (!el.checked) {
+                game.dices.chang_one_dice(index)
+            }
+            el.previousElementSibling.innerHTML = `<img src="./images/dices/Alea_${dice[index].value}.png">`;
 
-function game_table() {
-    let sum = 0;
-    player_one.forEach((die, index) => {
-        let dice = dices.dice_values;
+        });
+        upper_section_table();
+        turns--
+        throw_span.textContent = turns;
+    }
 
-        if (dice[index + 1] != 0 && index < 6) {
-            die.innerHTML = dice[index + 1] * (index + 1);
-            sum += dice[index + 1] * (index + 1);
-        } else if (dice[index + 1] != 0 && index == 6) {
-            die.innerHTML = sum;
-        } else if (dice[index + 1] != 0 && index == 7) {
-            if (sum >= 63) {
-                die.innerHTML = 50;
+    function upper_section_table() {
+        let fields = game.player_fields()
+        let dice = game.dices.dice_values;
+
+        for (let p = 0; p < fields.length; p++) {
+            const field = fields[p];
+            let player = game.players[p].name;
+            let td = field[player]
+            for (let i = 0; i < td.length; i++) {
+                const element = td[i];
+                if (dice[i + 1] < 1) {
+                    element.innerHTML = '';
+                } else {
+                    element.innerHTML = dice[i + 1] * (i + 1);
+                }
             }
         }
-    })
-}
-
-let fields = Array.from(document.querySelectorAll('.partsum1 input[type=number]'));
-
-let players = ['Kalle', 'Olle'];
-
-let scores = players.map((player, player_index) => fields.filter((obj, index) => (index + player_index) % players.length == 0))
-
-let player_no = 1;
-for (let player of scores) {
-    console.log(`Player no ${ player_no }, ${ players[player_no-1]}`);
-    player_no++;
-
-    for (let field of player) {
-        console.log(field.value)
     }
-}
+
+    function player_sum() {
+        // let fields = Array.from(document.querySelectorAll('.upper_section td'));
+
+        let scores = players.map((player, player_index) => fields.filter((obj, index) => (index + player_index) % players.length == 0))
+        let player_score = '';
+        let player_no = 1;
+        for (let player of scores) {
+            console.log(`Player no ${ player_no }, ${ players[player_no-1]}`);
+            player_no++;
+            player_score = player.map((p, i) => p.innerHTML).reduce(
+                (accumulator, currentValue) => accumulator + Number(currentValue), 0)
+        }
+        //
+        let fields_class = fields.reduce((allNames, name) => {
+            if (name.className in allNames) {
+                allNames[name.className]++
+            } else {
+                allNames[name.className] = 1
+            }
+            return allNames
+        }, [])
+        console.log(fields_class)
+            //
+        return player_score
+    }
+    // sort fields by Player OK
+    function player_field() {
+        let player_field = players.map((player, player_index) => fields.reduce((acc, obj, index, array) => {
+            let key = array[player_index].className;
+            let player_name = player;
+
+            if (!acc[player_name]) {
+                acc[player_name] = [];
+            }
+            if (obj.className == key) {
+                acc[player_name].push(obj)
+            }
+            return acc;
+        }, {}))
+        return player_field;
+    }
+})
