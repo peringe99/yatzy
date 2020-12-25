@@ -13,13 +13,20 @@
     <div class="container">
         <div class="table_area">
             <table>
+                <colgroup>
+                    <col class="player_th">
+                    <col class="player player1">
+                    <col class="player player2">
+                    <col class="player player3">
+                    <col class="player player4">
+                </colgroup>
                 <thead>
                     <tr class="spelare">
                         <th>Spelare/playerer</th>
-                        <th class="playerer_name">playerer 1</th>
-                        <th class="playerer_name">playerer 2</th>
-                        <th class="playerer_name">playerer 3</th>
-                        <th class="playerer_name">playerer 4</th>
+                        <th class="player_name1">playerer 1</th>
+                        <th class="player_name2">playerer 2</th>
+                        <th class="player_name3">playerer 3</th>
+                        <th class="player_name4">playerer 4</th>
                     </tr>
                 </thead>
                 <tbody class="upper_section">
@@ -69,17 +76,17 @@
                 <tbody class="sum_bonus_section">
                     <tr class="summa">
                         <th>Summa/Sum</th>
-                        <td class="player_1" data-td="7"></td>
-                        <td class="player_2" data-td="7"></td>
-                        <td class="player_3" data-td="7"></td>
-                        <td class="player_4" data-td="7"></td>
+                        <td class="player_1" data-td="sum"></td>
+                        <td class="player_2" data-td="sum"></td>
+                        <td class="player_3" data-td="sum"></td>
+                        <td class="player_4" data-td="sum"></td>
                     </tr>
                     <tr class="bonus">
                         <th>Bonus</th>
-                        <td class="player_1" data-td="8"></td>
-                        <td class="player_2" data-td="8"></td>
-                        <td class="player_3" data-td="8"></td>
-                        <td class="player_4" data-td="8"></td>
+                        <td class="player_1" data-td="bonus"></td>
+                        <td class="player_2" data-td="bonus"></td>
+                        <td class="player_3" data-td="bonus"></td>
+                        <td class="player_4" data-td="bonus"></td>
                     </tr>
                 </tbody>
                 <tbody class="lower_section">
@@ -193,26 +200,27 @@
                 </div>
                 <div class="clearboth"></div>
                 <div class="player_list">
-                    <div class="player">
-                        <span id="player_1" class="player_span" data-player="player_1"><i class="fas fa-5x fa-user"></i></span>
-                        <span class="player_name">player 1</span>
+                    <div class="player player1" data-id="player_1">
+                        <span class="player_span" data-player="player_1"><i class="fas fa-5x fa-user"></i></span>
+                        <span class="player_name1 p_name">player 1</span>
                     </div>
-                    <div class="player">
-                        <span id="player_1" class="player_span" data-player="player_2"><i class="fas fa-5x fa-user"></i></span>
-                        <span class="player_name">player 2</span>
+                    <div class="player player2" data-id="player_2">
+                        <span class="player_span" data-player="player_2"><i class="fas fa-5x fa-user"></i></span>
+                        <span class="player_name2 p_name">player 2</span>
                     </div>
-                    <div class="player">
-                        <span id="player_1" class="player_span" data-player="player_3"><i class="fas fa-5x fa-user"></i></span>
-                        <span class="player_name">player 3</span>
+                    <div class="player player3" data-id="player_3">
+                        <span class="player_span" data-player="player_3"><i class="fas fa-5x fa-user"></i></span>
+                        <span class="player_name3 p_name">player 3</span>
                     </div>
-                    <div class="player">
-                        <span id="player_1" class="player_span" data-player="player_4"><i class="fas fa-5x fa-user"></i></span>
-                        <span class="player_name">player 4</span>
+                    <div class="player player4" data-id="player_4">
+                        <span class="player_span" data-player="player_4"><i class="fas fa-5x fa-user"></i></span>
+                        <span class="player_name4 p_name">player 4</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="script.js"></script>
 </body>
 

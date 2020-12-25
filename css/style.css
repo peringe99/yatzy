@@ -9,7 +9,7 @@
 
 table {
     width: 600px;
-    background-color: rgba(0, 0, 0, .5);
+    /* background-color: rgba(0, 0, 0, .5); */
     font-weight: bold;
     text-align: center;
 }
@@ -19,8 +19,19 @@ th,
 td {
     border: 1px solid black;
     border-collapse: collapse;
+    padding: .3rem;
 }
 
+table tr>td {
+    width: 100px;
+}
+
+.player_th {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+
+/* 
 .summa>th,
 td {
     background-color: lightgray;
@@ -39,17 +50,7 @@ td {
 .spelare>th,
 td {
     background-color: lightgrey;
-}
-
-table,
-tr,
-th {
-    padding: .5rem;
-}
-
-table tr .active {
-    background-color: salmon;
-}
+} */
 
 .table_area {
     float: left;
@@ -133,7 +134,7 @@ table tr .active {
     text-align: center;
 }
 
-.player_list .player_name {
+.player_list .p_name {
     display: block;
     margin-top: 5px;
 }

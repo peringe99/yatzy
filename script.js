@@ -130,32 +130,44 @@ class Game {
     constructor() {
         this.players = [];
         this.dices = new Dice();
-
+        this.turns = 3;
+        this.player_fields();
     }
     addPlayer(playername) {
         let newPlayer = new Player(playername, false);
         this.players.push(newPlayer);
         this.players[0].myTurn = true;
-        this.player_fields();
     };
     change_player_turn() {
-        this.players.forEach(x => {
-            x.myTurn = x.myTurn ? false : true;
-        })
-    }
-    player_is_active() {
-        // let player_active = document.querySelectorAll('.playerer_name'); // todo active player in table
-        let player_active = document.querySelectorAll('.player_list .player');
-        player_active.forEach((x, index) => {
-            x.classList.remove('active');
-            if (this.players[index].myTurn == true) {
-                x.classList.add('active');
-            }
-        })
-    }
-    player_fields() { // kan ta in parameter
-        let fields = Array.from(document.querySelectorAll('.upper_section td'));
 
+            let p_length = this.players.length;
+            let p_index_true = this.players.findIndex(p => p.myTurn == true);
+            if (p_index_true + 1 == p_length) {
+                this.players[0].myTurn = true;
+                this.players[p_index_true].myTurn = false;
+            } else {
+                this.players[p_index_true].myTurn = false;
+                this.players[p_index_true + 1].myTurn = true;
+            }
+            this.player_is_active();
+        }
+        // work ? check remove class active 
+    player_is_active() {
+            let player_field = Array.from(document.querySelectorAll('.player'));
+            player_field.forEach(field => {
+                field.classList.remove('active');
+            })
+            this.players.forEach((x, index) => {
+                let pf = document.querySelectorAll(`.player${index + 1}`);
+                if (x.myTurn == true) {
+                    pf[0].classList.add('active')
+                    pf[1].classList.add('active')
+
+                }
+            });
+        }
+        // sort fields by Player
+    player_fields(fields) { // Fields element in parameter
         let player_field = this.players.map((player, player_index) =>
             fields.reduce((acc, obj, index, array) => {
                 let key = array[player_index].className;
@@ -168,16 +180,122 @@ class Game {
                 }
                 return acc;
             }, []))
+
         return player_field;
     }
+    startGame() {
+        swal("Select Game Mode:", {
+                buttons: {
+                    catch: {
+                        text: "Two Players",
+                        value: "two",
+                    },
+                    defeat: {
+                        text: "Four Players",
+                        value: "four",
+                    },
+                    cancel: "Cancel",
+                },
+            })
+            .then((value) => {
+                switch (value) {
+                    case "two":
+                        this.start_twoPlayers();
+                        break;
+                    case "four":
+                        this.start_fourPlayers();
+                        break;
+                    default:
+                        swal("Godbey ", {
+                            buttons: false,
+                            timer: 1000,
+                        });
+                }
+            });
+    }
+    start_twoPlayers() {
+        // let player1 = 'Player 1'; // Test Data
+        // let player2 = 'Player 2'; // Test Data
+        // let player1 = prompt("Name of player one?");
+        // let player2 = prompt("Name of player two?");
+        swal("Name of player one?", {
+                content: "input",
+            })
+            .then((player1) => {
+                let p1 = player1 == '' ? 'Player 1' : player1
+                this.addPlayer(p1);
+                let player_one = document.querySelectorAll(".player_name1");
+                player_one[0].innerHTML = p1;
+                player_one[1].innerHTML = p1;
+            }).then(() => {
+                swal("Name of player two?", {
+                    content: "input",
+                }).then((player2) => {
+                    let p2 = player2 == '' ? 'Player 2' : player2
+                    this.addPlayer(p2);
+                    let player_two = document.querySelectorAll(".player_name2");
+                    player_two[0].innerHTML = p2;
+                    player_two[1].innerHTML = p2;
+                }).then(() => {
+                    this.player_is_active();
+
+                })
+            });
+    }
+    start_fourPlayers() {
+        swal("Name of player one?", {
+                content: "input",
+            })
+            .then((player1) => {
+                let p1 = player1 == '' ? 'Player 1' : player1
+                this.addPlayer(p1);
+                let player_one = document.querySelectorAll(".player_name1");
+                player_one[0].innerHTML = p1;
+                player_one[1].innerHTML = p1;
+            }).then(() => {
+                swal("Name of player two?", {
+                    content: "input",
+                }).then((player2) => {
+                    let p2 = player2 == '' ? 'Player 2' : player2
+                    this.addPlayer(p2);
+                    let player_two = document.querySelectorAll(".player_name2");
+                    player_two[0].innerHTML = p2;
+                    player_two[1].innerHTML = p2;
+                }).then(() => {
+                    swal("Name of player three?", {
+                            content: "input",
+                        })
+                        .then((player3) => {
+                            let p3 = player3 == '' ? 'Player 3' : player3
+                            this.addPlayer(p3);
+                            let player_three = document.querySelectorAll(".player_name3");
+                            player_three[0].innerHTML = p3;
+                            player_three[1].innerHTML = p3;
+                        }).then(() => {
+                            swal("Name of player four?", {
+                                content: "input",
+                            }).then((player4) => {
+                                let p4 = player4 == '' ? 'Player 4' : player4
+                                this.addPlayer(p4);
+                                let player_four = document.querySelectorAll(".player_name4");
+                                player_four[0].innerHTML = p4;
+                                player_four[1].innerHTML = p4;
+                            }).then(() => {
+                                this.player_is_active();
+
+                            })
+                        });
+                })
+            });
+    }
 }
-/* End Game Class */
+/* End Class Game*/
 let turns = 3;
 let dice_array = [6, 2, 2, 2, 6];
 
 let dices = new Dice();
 let game = new Game();
-game.addPlayer('Kalle');
+// game.addPlayer('Kalle');
 // game.addPlayer('Olle');
 
 
@@ -193,19 +311,21 @@ game.addPlayer('Kalle');
 
 document.addEventListener("DOMContentLoaded", function(e) {
 
-    // let players = ['Kalle', 'Olle']; // Test 
+    // Start Game
+    game.startGame();
 
     let allDices = document.querySelectorAll(".dice_area .dice_list .dice_span");
-
+    let upper_section = Array.from(document.querySelectorAll('.upper_section td'));
     let startbtn = document.getElementById('startbtn');
     let throw_span = document.getElementById('throw_span');
 
     let fields = Array.from(document.querySelectorAll('.upper_section td')); // 
+    let sum_bonus_section = Array.from(document.querySelectorAll('.sum_bonus_section td')); // 
 
     startbtn.addEventListener('click', dice_checkbox);
 
     function dice_elements() {
-        if (turns == 1) {
+        if (game.turns == 1) {
             this.setAttribute('disabled', 'disabled');
         }
         allDices.forEach((die, index) => {
@@ -218,15 +338,17 @@ document.addEventListener("DOMContentLoaded", function(e) {
         });
         upper_section_table();
         // player_sum()
-        turns--
-        throw_span.textContent = turns;
+        game.turns--
+            throw_span.textContent = game.turns;
     }
 
     function dice_checkbox() {
         let checkboxes = Array.from(document.querySelectorAll(".dice input"));
-        if (turns == 1) {
-            this.setAttribute('disabled', 'disabled');
-        }
+        // if (game.turns == 1) {
+        //     this.setAttribute('disabled', 'disabled');
+        //     game.change_player_turn();
+        // }
+        game.turns--;
         let checked_boxes = checkboxes.filter(current_checkbox => {
             return current_checkbox;
         }, []);
@@ -235,28 +357,64 @@ document.addEventListener("DOMContentLoaded", function(e) {
             if (!el.checked) {
                 game.dices.chang_one_dice(index)
             }
-            el.previousElementSibling.innerHTML = `<img src="./images/dices/Alea_${dice[index].value}.png">`;
+            if (game.turns == 0) {
+                el.previousElementSibling.innerHTML = `<img src="./images/dices/Alea_0.png">`;
+                el.checked = false;
+            } else {
+                el.previousElementSibling.innerHTML = `<img src="./images/dices/Alea_${dice[index].value}.png">`;
+            }
 
         });
         upper_section_table();
-        turns--
-        throw_span.textContent = turns;
+        upper_section_sum();
+        if (game.turns == 0) {
+            game.change_player_turn();
+            game.turns = 3;
+        }
+        throw_span.textContent = game.turns;
     }
 
     function upper_section_table() {
-        let fields = game.player_fields()
-        let dice = game.dices.dice_values;
 
+        let fields = game.player_fields(upper_section)
+        let dice = game.dices.dice_values;
         for (let p = 0; p < fields.length; p++) {
             const field = fields[p];
-            let player = game.players[p].name;
-            let td = field[player]
-            for (let i = 0; i < td.length; i++) {
-                const element = td[i];
-                if (dice[i + 1] < 1) {
-                    element.innerHTML = '';
-                } else {
-                    element.innerHTML = dice[i + 1] * (i + 1);
+            let player = game.players[p];
+            let td = field[player.name];
+            if (player.myTurn) {
+                for (let i = 0; i < td.length; i++) {
+                    const element = td[i];
+                    if (dice[i + 1] < 1) {
+                        element.innerHTML = '';
+                    } else {
+                        element.innerHTML = dice[i + 1] * (i + 1);
+                    }
+                }
+            }
+        }
+    }
+
+    function upper_section_sum() {
+
+        let fields = game.player_fields(upper_section);
+        let sum_fields = game.player_fields(sum_bonus_section);
+        let sum = [];
+        for (let p = 0; p < fields.length; p++) {
+            const field = fields[p];
+            let player = game.players[p];
+            let td = field[player.name];
+
+            let sum_f = sum_fields[p];
+            let td_sum = sum_f[player.name]
+            for (let i = 0; i < td_sum.length; i++) {
+                const element = td_sum[i];
+                let sum = td.reduce(
+                    (accumulator, currentValue) => accumulator + Number(currentValue.innerHTML), 0);
+                if (element.dataset.td == 'sum' && sum > 0) {
+                    element.innerHTML = sum;
+                } else if (element.dataset.td == 'bonus' && sum >= 63) {
+                    element.innerHTML = 25;
                 }
             }
         }
@@ -276,14 +434,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
         //
         let fields_class = fields.reduce((allNames, name) => {
-            if (name.className in allNames) {
-                allNames[name.className]++
-            } else {
-                allNames[name.className] = 1
-            }
-            return allNames
-        }, [])
-        console.log(fields_class)
+                if (name.className in allNames) {
+                    allNames[name.className]++
+                } else {
+                    allNames[name.className] = 1
+                }
+                return allNames
+            }, [])
+            // console.log(fields_class)
             //
         return player_score
     }
