@@ -14,13 +14,85 @@ class Dice {
         this.dice_objects = [];
         this.dice_values = Array(7);
 
-        for (let dice_counter = 0; dice_counter < no_of_dice; dice_counter++) {
-            this.dice_objects.push(new Die());
-        }
+        // for (let dice_counter = 0; dice_counter < no_of_dice; dice_counter++) {
+        //     this.dice_objects.push(new Die());
+        // }
 
-        this.throw();
+        // this.throw();
     }
 
+    one_of_akind() {
+        let sum = 0;
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const current_dice = this.dice_values[i];
+            if (current_dice != 0 && current_dice == 2) {
+                length += current_dice
+                sum = current_dice * i;
+            }
+        }
+        if (length == 2) {
+            // console.log('One of kind', sum);
+            return sum;
+        } else {
+            // console.log('One of kind', 0);
+            return 0;
+        }
+    }
+    two_of_akind() {
+        let sum = 0;
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const current_dice = this.dice_values[i];
+            if (current_dice != 0 && current_dice == 2) {
+                length += current_dice
+                sum = current_dice * i;
+            }
+        }
+        if (length == 4) {
+            // console.log('Two of kind', sum);
+            return sum;
+        } else {
+            // console.log('Two of kind', 0);
+            return 0;
+        }
+    }
+    three_of_akind() {
+        let sum = 0;
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const current_dice = this.dice_values[i];
+            if (current_dice != 0 && current_dice == 3) {
+                length += current_dice
+                sum = current_dice * i;
+            }
+        }
+        if (length == 3) {
+            // console.log('Three of kind', sum);
+            return sum;
+        } else {
+            // console.log('Three of kind', 0);
+            return 0;
+        }
+    }
+    four_of_akind() {
+        let sum = 0;
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const current_dice = this.dice_values[i];
+            if (current_dice != 0 && current_dice == 4) {
+                length += current_dice
+                sum = current_dice * i;
+            }
+        }
+        if (length == 4) {
+            // console.log('Four of kind', sum);
+            return sum;
+        } else {
+            // console.log('Four of kind', 0);
+            return 0;
+        }
+    }
     small_straight() {
         let result_length = this.how_many_straight();
         if (result_length >= 4) {
@@ -37,31 +109,7 @@ class Dice {
             return 0
         }
     }
-    how_many_straight() {
-        let length = 0;
-        for (let i = 1; i < this.dice_values.length; i++) {
-            const element = this.dice_values[i];
-            if (element == 1) {
-                length++;
-            }
-        }
-        return length;
-    }
-    has_yatzy() {
-        let length = 0;
-        for (let i = 1; i < this.dice_values.length; i++) {
-            const element = this.dice_values[i];
-            if (element != 0) {
-                length++;
-            }
-        }
-        if (length == 1) {
-            return 50;
-        } else {
-            return 0
-        }
-    }
-    has_FullHouse() {
+    FullHouse() {
         let length = 0;
         for (let i = 1; i < this.dice_values.length; i++) {
             const element = this.dice_values[i];
@@ -75,6 +123,31 @@ class Dice {
             return 0
         }
     }
+    yatzy() {
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const element = this.dice_values[i];
+            if (element != 0) {
+                length++;
+            }
+        }
+        if (length == 1) {
+            return 50;
+        } else {
+            return 0
+        }
+    }
+    how_many_straight() {
+        let length = 0;
+        for (let i = 1; i < this.dice_values.length; i++) {
+            const element = this.dice_values[i];
+            if (element == 1) {
+                length++;
+            }
+        }
+        return length;
+    }
+
     get_die_of_akind() {
         let length = 0;
         let sum = 0;
@@ -290,8 +363,8 @@ class Game {
     }
 }
 /* End Class Game*/
-let turns = 3;
-let dice_array = [6, 2, 2, 2, 6];
+// let turns = 3;
+let dice_array = [1, 2, 2, 5, 6];
 
 let dices = new Dice();
 let game = new Game();
@@ -300,11 +373,15 @@ let game = new Game();
 
 
 // dices.set_test_obj(dice_array) // To set test dice array
+// dices.one_of_akind();
+// dices.two_of_akind();
+// dices.three_of_akind();
+// dices.four_of_akind();
 
 // console.log(dice1.small_straight());
 // console.log(dice1.large_straight());
 // console.log(dice1.has_yatzy());
-// console.log(dice1.has_FullHouse());
+// console.log(dice1.FullHouse());
 // console.log(dice1.get_die_of_akind());
 
 
@@ -316,6 +393,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
     let allDices = document.querySelectorAll(".dice_area .dice_list .dice_span");
     let upper_section = Array.from(document.querySelectorAll('.upper_section td'));
+    let lower_section = Array.from(document.querySelectorAll('.lower_section td'));
+
     let startbtn = document.getElementById('startbtn');
     let throw_span = document.getElementById('throw_span');
 
@@ -367,6 +446,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
         });
         upper_section_table();
         upper_section_sum();
+        lower_section_table();
         if (game.turns == 0) {
             game.change_player_turn();
             game.turns = 3;
@@ -375,7 +455,6 @@ document.addEventListener("DOMContentLoaded", function(e) {
     }
 
     function upper_section_table() {
-
         let fields = game.player_fields(upper_section)
         let dice = game.dices.dice_values;
         for (let p = 0; p < fields.length; p++) {
@@ -420,45 +499,75 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
     }
 
-    function player_sum() {
-        // let fields = Array.from(document.querySelectorAll('.upper_section td'));
+    function lower_section_table() {
+        let fields = game.player_fields(lower_section);
 
-        let scores = players.map((player, player_index) => fields.filter((obj, index) => (index + player_index) % players.length == 0))
-        let player_score = '';
-        let player_no = 1;
-        for (let player of scores) {
-            console.log(`Player no ${ player_no }, ${ players[player_no-1]}`);
-            player_no++;
-            player_score = player.map((p, i) => p.innerHTML).reduce(
-                (accumulator, currentValue) => accumulator + Number(currentValue), 0)
-        }
-        //
-        let fields_class = fields.reduce((allNames, name) => {
-                if (name.className in allNames) {
-                    allNames[name.className]++
-                } else {
-                    allNames[name.className] = 1
+        for (let p = 0; p < fields.length; p++) {
+            const field = fields[p];
+            let player = game.players[p];
+            let td = field[player.name];
+            if (player.myTurn) {
+                for (let i = 0; i < td.length; i++) {
+                    const element = td[i];
+                    if (element.dataset.td == 'one_of_akind') {
+                        let result = game.dices.one_of_akind();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'two_of_akind') {
+                        let result = game.dices.two_of_akind();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'three_of_akind') {
+                        let result = game.dices.three_of_akind();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'four_of_akind') {
+                        let result = game.dices.four_of_akind();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'small_straight') {
+                        let result = game.dices.small_straight();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'large_straight') {
+                        let result = game.dices.large_straight();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'FullHouse') {
+                        let result = game.dices.FullHouse();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    } else if (element.dataset.td == 'yatzy') {
+                        let result = game.dices.yatzy();
+                        if (result == 0) {
+                            element.innerHTML = '';
+                        } else {
+                            element.innerHTML = result;
+                        }
+                    }
                 }
-                return allNames
-            }, [])
-            // console.log(fields_class)
-            //
-        return player_score
-    }
-    // sort fields by Player OK
-    function player_field() {
-        let player_field = players.map((player, player_index) => fields.reduce((acc, obj, index, array) => {
-            let key = array[player_index].className;
-            let player_name = player;
-
-            if (!acc[player_name]) {
-                acc[player_name] = [];
             }
-            if (obj.className == key) {
-                acc[player_name].push(obj)
-            }
-            return acc;
-        }, {}))
-        return player_field;
+        }
     }
 })
