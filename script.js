@@ -279,7 +279,7 @@ class Game {
                         this.start_fourPlayers();
                         break;
                     default:
-                        swal("Godbey ", {
+                        swal("Goodbye ", {
                             buttons: false,
                             timer: 1000,
                         });
